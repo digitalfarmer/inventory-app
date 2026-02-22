@@ -14,9 +14,10 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+
+    'title' => 'Inventory',
     'title_prefix' => '',
-    'title_postfix' => '',
+    'title_postfix' => '| Inventory App',
 
     /*
     |--------------------------------------------------------------------------
@@ -82,6 +83,7 @@ return [
     | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Basic-Configuration
     |
     */
+    
 
     'auth_logo' => [
         'enabled' => false,
@@ -259,6 +261,7 @@ return [
     'use_route_url' => false,
     'dashboard_url' => 'home',
     'logout_url' => 'logout',
+    'logout_method' => 'POST', // Breeze menggunakan metode POST untuk logout
     'login_url' => 'login',
     'register_url' => 'register',
     'password_reset_url' => 'password/reset',
@@ -333,6 +336,7 @@ return [
         'url'  => 'stock-out',
         'icon' => 'fas fa-fw fa-arrow-up',
     ],
+   
 ],
 
     /*

@@ -12,7 +12,8 @@ class HomeController extends Controller
         $total_produk = Product::count();
         $total_kategori = Category::count();
         $stok_limit = Product::where('stock', '<', 10)->count(); // Barang yang stoknya mau habis
+        $keluar_hari_ini = \App\Models\StockExit::whereDate('created_at', today())->sum('qty');         
 
-        return view('home', compact('total_produk', 'total_kategori', 'stok_limit'));
+        return view('home', compact('total_produk', 'total_kategori', 'stok_limit', 'keluar_hari_ini'));
     }
 }

@@ -17,4 +17,9 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    // Relasi dengan StockEntry  
+    public function stockEntries() {
+    return $this->hasMany(StockEntry::class);
+}
+
 }
