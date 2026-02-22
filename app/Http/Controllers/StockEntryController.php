@@ -39,4 +39,17 @@ class StockEntryController extends Controller
 
         return redirect()->route('stock-in.index')->with('success', 'Stok berhasil ditambah!');
     }
+    public function destroy(StockEntry $stock_in) // Laravel otomatis cari ID-nya
+{
+    DB::transaction(function () use ($stock_in) {
+        $product = Product::find($stock_in->product_id);
+        
+        // Balikin stok: Karena ini barang masuk yang dihapus, maka stok dikurangi
+        $product->decrement('stock', $stock_in->qty);
+        
+        $stock_in->delete();
+    });
+
+    return back()->with('success', 'Transaksi dibatalkan, stok telah disesuaikan.');
+}
 }

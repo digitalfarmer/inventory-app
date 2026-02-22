@@ -3,7 +3,7 @@
 @section('title', 'Daftar Produk')
 
 @section('content_header')
-<h1>Master Produk</h1>
+    <h1>Master Produk</h1>
 @stop
 
 @section('content')
@@ -19,7 +19,7 @@
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
-        <table class="table table-bordered">
+        <table id="table-produk" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>Kode</th>
@@ -27,7 +27,7 @@
                     <th>Kategori</th>
                     <th>Stok</th>
                     <th>Harga</th>
-                </tr>
+                    <th>Aksi</th> </tr>
             </thead>
             <tbody>
                 @foreach($products as $p)
@@ -60,4 +60,19 @@
         </table>
     </div>
 </div>
+@stop
+
+@section('js')
+    <script>
+        $(function () {
+            $("#table-produk").DataTable({
+                "responsive": true, 
+                "lengthChange": true, 
+                "autoWidth": false,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Indonesian.json"
+                }
+            });
+        });
+    </script>
 @stop

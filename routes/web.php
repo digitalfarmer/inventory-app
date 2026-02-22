@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StockEntryController;
 use App\Http\Controllers\StockExitController;
 use Illuminate\Support\Facades\Route;
@@ -32,5 +33,6 @@ Route::middleware(['auth'])->group(function () {
 
 Route::resource('stock-in', StockEntryController::class);
 Route::resource('stock-out', StockExitController::class);
+Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
 require __DIR__.'/auth.php';

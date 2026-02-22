@@ -42,4 +42,17 @@ class StockExitController extends Controller
 
         return redirect()->route('stock-out.index')->with('success', 'Barang berhasil keluar!');
     }
+    public function destroy(StockExit $stock_out) // Laravel otomatis cari ID-nya
+    {
+        DB::transaction(function () use ($stock_out) {
+            $product = Product::find($stock_out->product_id);
+
+            // Balikin stok: Karena ini barang keluar yang dihapus, maka stok ditambah
+            $product->increment('stock', $stock_out->qty);
+
+            $stock_out->delete();
+        });
+
+        return back()->with('success', 'Transaksi dibatalkan, stok telah disesuaikan.');
+    }
 }
