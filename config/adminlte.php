@@ -83,7 +83,7 @@ return [
     | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Basic-Configuration
     |
     */
-    
+
 
     'auth_logo' => [
         'enabled' => false,
@@ -302,42 +302,69 @@ return [
     */
 
     'menu' => [
-    // Header Sidebar
-    ['header' => 'MAIN NAVIGATION'],
-    [
-        'text' => 'Dashboard',
-        'url'  => 'home',
-        'icon' => 'fas fa-fw fa-tachometer-alt',
-    ],
-    [
-        'text'    => 'Master Data',
-        'icon'    => 'fas fa-fw fa-box',
-        'submenu' => [
-            [
-                'text' => 'Kategori Barang',
-                'url'  => 'categories',
-                'icon' => 'fas fa-fw fa-tags',
-            ],
-            [
-                'text' => 'Data Produk',
-                'url'  => 'products',
-                'icon' => 'fas fa-fw fa-boxes',
+        ['header' => 'MAIN NAVIGATION'],
+
+        [
+            'text' => 'Dashboard',
+            'url' => 'home',
+            'icon' => 'fas fa-fw fa-tachometer-alt',
+        ],
+
+        // MENU MASTER DATA
+        [
+            'text' => 'Master Data',
+            'icon' => 'fas fa-fw fa-database',
+            'role' => 'admin',
+            'submenu' => [
+                [
+                    'text' => 'Kategori',
+                    'url' => 'categories',
+                    'icon' => 'fas fa-fw fa-list',
+                ],
+                [
+                    'text' => 'Produk',
+                    'url' => 'products',
+                    'icon' => 'fas fa-fw fa-box',
+                ],
             ],
         ],
+
+        // MENU INVENTORY (Sekarang Laporan gabung di sini)
+        [
+            'text' => 'Inventory',
+            'icon' => 'fas fa-fw fa-exchange-alt',
+            'submenu' => [
+                [
+                    'text' => 'Stok Masuk',
+                    'url' => 'stock-in',
+                    'icon' => 'fas fa-fw fa-arrow-circle-down',
+                ],
+                [
+                    'text' => 'Stok Keluar',
+                    'url' => 'stock-out',
+                    'icon' => 'fas fa-fw fa-arrow-circle-up',
+                ],
+                [
+                    'text' => 'Laporan Mutasi', // <--- Pindah ke sini
+                    'url' => 'reports',
+                    'icon' => 'fas fa-fw fa-file-invoice',
+                ],
+            ],
+        ],
+
+        ['header' => 'USER SETTINGS'],
+        [
+            'text' => 'Profil Saya',
+            'url' => 'profile',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+        [
+            'text' => 'Kelola User',
+            'url' => 'users',
+            'icon' => 'fas fa-fw fa-users-cog',
+            'role' => 'is-admin', // Gate yang kita buat sebelumnya
+        ],
     ],
-    ['header' => 'TRANSAKSI'],
-    [
-        'text' => 'Barang Masuk',
-        'url'  => 'stock-in',
-        'icon' => 'fas fa-fw fa-arrow-down',
-    ],
-    [
-        'text' => 'Barang Keluar',
-        'url'  => 'stock-out',
-        'icon' => 'fas fa-fw fa-arrow-up',
-    ],
-   
-],
 
     /*
     |--------------------------------------------------------------------------
@@ -395,7 +422,7 @@ return [
             ],
         ],
         'Select2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
@@ -420,11 +447,11 @@ return [
             ],
         ],
         'Sweetalert2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
                 ],
             ],

@@ -3,7 +3,7 @@
 @section('title', 'Tambah Produk')
 
 @section('content_header')
-    <h1>Tambah Produk Baru</h1>
+<h1>Tambah Produk Baru</h1>
 @stop
 
 @section('content')
@@ -21,11 +21,13 @@
             </div>
             <div class="form-group">
                 <label>Kategori</label>
-                <select name="category_id" class="form-control">
-                    @foreach($categories as $c)
-                        <option value="{{ $c->id }}">{{ $c->name }}</option>
+                <select name="category_id" class="form-control select2">
+                    <option value="">-- Pilih Kategori --</option>
+                    @foreach($categories as $cat)
+                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                     @endforeach
                 </select>
+                
             </div>
             <div class="row">
                 <div class="col-6">
@@ -44,4 +46,16 @@
         </div>
     </form>
 </div>
+
+@section('js')
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            theme: 'bootstrap4', // Biar tampilannya nyambung sama AdminLTE
+            placeholder: "Pilih data...",
+            allowClear: true
+        });
+    });
+</script>
+@stop
 @stop

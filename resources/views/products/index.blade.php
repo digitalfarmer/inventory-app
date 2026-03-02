@@ -15,64 +15,76 @@
         </div>
     </div>
     <div class="card-body">
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-
         <table id="table-produk" class="table table-bordered table-striped">
             <thead>
                 <tr>
+                    <th>No</th>
                     <th>Kode</th>
                     <th>Nama</th>
                     <th>Kategori</th>
                     <th>Stok</th>
                     <th>Harga</th>
-                    <th>Aksi</th> </tr>
+                    <th width="100px">Aksi</th>
+                </tr>
             </thead>
-            <tbody>
-                @foreach($products as $p)
-                    <tr>
-                        <td>{{ $p->code }}</td>
-                        <td>{{ $p->name }}</td>
-                        <td>{{ $p->category->name }}</td>
-                        <td>
-                            <span class="badge {{ $p->stock < 10 ? 'badge-danger' : 'badge-success' }}">
-                                {{ $p->stock }}
-                            </span>
-                        </td>
-                        <td>Rp {{ number_format($p->price, 0, ',', '.') }}</td>
-                        <td>
-                            <form action="{{ route('products.destroy', $p->id) }}" method="POST"
-                                onsubmit="return confirm('Yakin hapus barang ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <a href="{{ route('products.edit', $p->id) }}" class="btn btn-warning btn-sm">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
+            <tbody></tbody>
         </table>
     </div>
 </div>
 @stop
 
 @section('js')
-    <script>
-        $(function () {
-            $("#table-produk").DataTable({
-                "responsive": true, 
-                "lengthChange": true, 
-                "autoWidth": false,
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Indonesian.json"
+<script>
+    $(function () {
+        // 1. DataTable tanpa memanggil URL bahasa luar (biar gak CORS error)
+        var table = $('#table-produk').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('products.index') }}",
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                { data: 'code', name: 'code' },
+                { data: 'name', name: 'name' },
+                { data: 'category_name', name: 'category_name' },
+                { data: 'stock', name: 'stock' },
+                { data: 'price_format', name: 'price_format' },
+                { data: 'action', name: 'action', orderable: false, searchable: false },
+            ]
+        });
+
+        // 2. SweetAlert Hapus (Event Delegation)
+        $(document).on('click', '.btn-delete', function (e) {
+            e.preventDefault();
+            var form = $(this).closest('form');
+
+            // Kita pastikan panggil Swal (versi terbaru)
+            Swal.fire({
+                title: 'Apakah Anda Yakin?',
+                text: "Data produk ini akan dihapus permanen!",
+                icon: 'warning', 
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.value || result.isConfirmed) { // Support v8 dan v11
+                    form.submit();
                 }
             });
         });
+    });
+</script>
+
+@if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: "{{ session('success') }}",
+            timer: 2000,
+            showConfirmButton: false
+        });
     </script>
+@endif
 @stop

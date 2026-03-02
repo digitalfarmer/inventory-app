@@ -2,18 +2,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\Category;
+use App\Models\StockEntry;
+use App\Models\StockExit;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $total_produk = Product::count();
-        $total_kategori = Category::count();
-        $stok_limit = Product::where('stock', '<', 10)->count(); // Barang yang stoknya mau habis
-        $keluar_hari_ini = \App\Models\StockExit::whereDate('created_at', today())->sum('qty');         
+        $totalProduk = Product::count();
+        
+        // Barang yang stoknya kritis (misal < 10)
+        $stokKritis = Product::where('stock', '<', 10)->count();
+        
+        // Total barang yang masuk & keluar HARI INI saja
+        $masukHariIni = StockEntry::whereDate('date', today())->sum('qty');
+        $keluarHariIni = StockExit::whereDate('date', today())->sum('qty');
 
-        return view('home', compact('total_produk', 'total_kategori', 'stok_limit', 'keluar_hari_ini'));
+        return view('home', compact(
+            'totalProduk', 
+            'stokKritis', 
+            'masukHariIni', 
+            'keluarHariIni'
+        ));
     }
 }
